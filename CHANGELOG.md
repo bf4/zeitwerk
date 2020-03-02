@@ -1,6 +1,22 @@
 # CHANGELOG
 
-## 2.2.3 (Unreleased)
+## 2.3.0 (Unreleased)
+
+* Adds support for skipped namespaces.
+
+    For example, if `booking/actions/create.rb` is meant to define `Booking::Create` because the subdirectory `actions` is there only for organizational purposes, you can tell Zeitwerk with `skip`:
+
+    ```ruby
+    loader.skip("booking/actions")
+    ```
+
+    The method also accepts glob patterns to support standardized project structures:
+
+    ```ruby
+    loader.skip("*/actions")
+    ```
+
+    Please check the documentation for more details.
 
 * Eager loading is idempotent, but now you can eager load again after reloading.
 

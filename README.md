@@ -12,6 +12,7 @@
 - [File structure](#file-structure)
     - [Implicit namespaces](#implicit-namespaces)
     - [Explicit namespaces](#explicit-namespaces)
+    - [Skipped namespaces](#skipped-namespaces)
     - [Nested root directories](#nested-root-directories)
 - [Usage](#usage)
     - [Setup](#setup)
@@ -164,6 +165,32 @@ end
 ```
 
 An explicit namespace must be managed by one single loader. Loaders that reopen namespaces owned by other projects are responsible for loading their constants before setup.
+
+<a id="markdown-skipped-namespaces" name="skipped-namespaces"></a>
+### Skipped namespaces
+
+Say a project has some subdirectories for organizational purposes only, and you prefer not to have them as namespaces. For example:
+
+```
+booking.rb                -> Booking
+booking/actions/create.rb -> Booking::Create
+```
+
+To let Zeitwerk know `booking/actions` should not be considered to map to a `Booking::Actions` namespace, use the `skip` method before calling `setup`:
+
+```ruby
+loader.skip("booking/actions")
+```
+
+The `skip` method accepts an arbitrary number of strings or `Pathname` objects, and also an array of them.
+
+You can skip directories and glob patterns. Glob patterns are expanded when they are added, and again on each reload.
+
+To illustrate usage of glob patterns, if `actions` in the example above is part of a standardized structure found under each topic, you could use a wildcard:
+
+```ruby
+loader.skip("*/actions")
+```
 
 <a id="markdown-nested-root-directories" name="nested-root-directories"></a>
 ### Nested root directories
